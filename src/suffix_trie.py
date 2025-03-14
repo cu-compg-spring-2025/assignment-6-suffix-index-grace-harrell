@@ -19,13 +19,48 @@ def get_args():
 
     return parser.parse_args()
 
+
+### Trie Class #######################################################################
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.endOfString = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, suffix, index):
+        current_node = self.root
+        for char in suffix:
+            if char not in current_node.children :
+                current_node.children[char] = TrieNode()
+            current_node = current_node.children[char]
+        current_node.endOfString = True
+    
+    def search(self, pattern):
+        current_node = self.root
+        match_length = 0
+        for char in pattern:
+            if char in current_node.children:
+                current_node = current_node.children[char]
+                match_length += 1
+            else:
+                break
+        return match_length
+
+#####################################################################################
+
 def build_suffix_trie(s):
     # YOUR CODE HERE
-    return None
+    trie = Trie()
+    for i in range(len(s)):
+        suffix = s[i:]
+        trie.insert(suffix, i)      
+    return trie
 
 def search_trie(trie, pattern):
-    # YOUR CODE HERE
-    return None
+    return trie.search(pattern)
 
 def main():
     args = get_args()
